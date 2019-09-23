@@ -1,0 +1,18 @@
+jenkins:
+  clouds:
+  - docker:
+      dockerApi:
+        connectTimeout: 60
+        dockerHost:
+          uri: "tcp://system-docker:2375"
+        readTimeout: 60
+      name: "docker"
+      templates:
+      - connector:
+          attach:
+            user: "root"
+        dockerTemplateBase:
+          image: "maven:3.6.2-jdk-8"
+        instanceCapStr: "10"
+        labelString: "d/maven-3.6.2-jdk-8"
+        name: "maven-3.6.2-jdk-8"
