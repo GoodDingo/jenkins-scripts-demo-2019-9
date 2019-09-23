@@ -1,0 +1,43 @@
+tool:
+  jdk:
+    installations:
+    - name: "OpenJDK 8"
+      properties:
+      - installSource:
+          installers:
+          - adoptOpenJdkInstaller:
+              id: "jdk8u222-b10"
+    - name: "OpenJDK 11"
+      properties:
+      - installSource:
+          installers:
+          - adoptOpenJdkInstaller:
+              id: "jdk-11+28"
+    - name: "Oracle JDK 8"
+      properties:
+      - installSource:
+          installers:
+          - jdkInstaller:
+              acceptLicense: true
+              id: "jdk-8u221-oth-JPR"
+
+  maven:
+    installations:
+    - name: "Maven 3"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "3.6.2"
+    - name: "Maven 3.3.9"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "3.3.9"
+    - name: "Maven 2"
+      properties:
+      - installSource:
+          installers:
+          - maven:
+              id: "2.2.1"

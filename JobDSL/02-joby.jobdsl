@@ -1,0 +1,132 @@
+#!groovy
+
+
+import jenkins.model.*
+import hudson.security.*
+
+
+// def labInstance = '1.1.2.3'
+
+def labInstance = InetAddress.localHost.hostAddress
+
+def gitPrefix = "http://${labInstance}/gitserver/datascript"
+
+def generuj_dobry_job_pro_atym(String path, String gitUrl, Map m, String shellCmd)
+{
+    freeStyleJob("${path}/${m.name}") {
+        logRotator(365, 500, 365, 10)
+
+        concurrentBuild(true)
+
+        jdk('OpenJDK 8')
+
+        scm {
+            git {
+                remote {
+                    url(gitUrl)
+                }
+                browser {
+                    gogs(gitUrl)
+                }
+                branch(m.branch)
+            }
+        }
+
+        triggers {
+            scm('@daily')
+        }
+
+        wrappers {
+            colorizeOutput()
+            timestamps()
+        }
+
+        steps {
+            maven {
+                // ?
+                goals('-e verify -Dmaven.test.failure.ignore=true')
+            }
+            maven {
+                goals('-e checkstyle:checkstyle')
+            }
+            shell("""\
+                set +x\n
+                echo "\\n\\n\\n"\n
+                ${shellCmd}\n
+                echo "\\n\\n\\n"
+            """.stripIndent())
+        }
+
+        publishers {
+            if (m.artifacts) {
+                archiveArtifacts {
+                    pattern('target/*.jar')
+                    onlyIfSuccessful()
+                    fingerprint()
+                }
+            }
+            fingerprint('pom.xml')
+            recordIssues {
+                tools {
+                    mavenConsole()
+                    java()
+                    checkStyle()
+                }
+            }
+            archiveJunit('target/*-reports/*.xml') {
+                allowEmptyResults()
+                retainLongStdout()
+                testDataPublishers {
+                    publishTestStabilityData()
+                }
+            }
+            jacocoCodeCoverage {
+                sourcePattern('src/**')
+            }
+        }
+    }
+}
+
+
+/// pro cesta='a/b/c/d'
+/// zavola:
+///         folder('a')
+///         folder('a/b')
+///         folder('a/b/c')
+///         folder('a/b/c/d')
+def vytvor_adresare(String cesta) {
+    dirs = cesta.split('/')
+    for (int i = 0; i < dirs.size(); i++) {
+        folder(dirs[0..i].join('/'))
+    }
+}
+
+
+all_jobs = [
+    [name: 'bugfix',  branch: 'bugfix/**',  artifacts: false],
+    [name: 'feature', branch: 'feature/**', artifacts: false],
+    [name: 'develop', branch: 'develop',    artifacts: true],
+    [name: 'master',  branch: 'master',     artifacts: true],
+]
+
+
+
+adresar = 'TEAMS/A-TEAM/01-HELLO-FROM-CLI'
+gitSuffix = '01_mvn-console-hello.git'
+shellCmd = 'java -jar target/*.jar'
+
+vytvor_adresare(adresar)
+for (job_info in all_jobs) {
+    generuj_dobry_job_pro_atym(adresar, "${gitPrefix}/${gitSuffix}", job_info, shellCmd)
+}
+
+
+
+adresar = 'TEAMS/A-TEAM/02-HELLO-THROUGH-WEB'
+gitSuffix = '02_mvn-dropwizzard-hello.git'
+shellCmd = 'java -jar target/demoapp.jar --version'
+
+vytvor_adresare(adresar)
+for (job_info in all_jobs) {
+    generuj_dobry_job_pro_atym(adresar, "${gitPrefix}/${gitSuffix}", job_info, shellCmd)
+}

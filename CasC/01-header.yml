@@ -1,0 +1,8 @@
+jenkins:
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: false
+  systemMessage: |
+    <div style="border:5px; border-style:solid; border-color:#FF0000; padding: 1em;">
+    <p style="font-size: 16px; margin:0px">Everything works for now 🎉😊 <br/><b>Don't panic!</b></p>
+    </div>

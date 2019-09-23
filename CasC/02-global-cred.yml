@@ -1,0 +1,17 @@
+credentials:
+  system:
+    domainCredentials:
+    - credentials:
+      - usernamePassword:
+          description: "global-cred"
+          id: "global-cred"
+          password: "{AQAAABAAAAAQipKuAgsqLjXisM/t40hcJuGujLqi6NsWjGL1UEgy+G4=}"
+          scope: GLOBAL
+          username: "global-cred"
+      - usernamePassword:
+          description: "secret-cred"
+          id: "secret-cred"
+          password: "{AQAAABAAAAAQh/4bHPLcMDt8gjiGbGakuYJKkzWPj/xML/Yx/y75Kwc=}"
+          scope: SYSTEM
+          username: "secret-cred"
+          

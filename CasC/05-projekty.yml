@@ -1,0 +1,11 @@
+jenkins:
+  projectNamingStrategy:
+    pattern:
+      description: "Pouze velká písmena pro složky. Pouze malá pro joby. Bez mezer,\
+        \ ne divný znaky!"
+      forceExistingJobs: false
+      namePattern: "([a-z0-9(),.=_+-]+)|([A-Z0-9(),.=_+-]+)"
+ 
+jobs:
+  - url: https://raw.githubusercontent.com/GoodDingo/jenkins-scripts-demo-2019-9/develop/JobDSL/01-folders.jobdsl
+  - url: https://raw.githubusercontent.com/GoodDingo/jenkins-scripts-demo-2019-9/develop/JobDSL/02-joby.jobdsl

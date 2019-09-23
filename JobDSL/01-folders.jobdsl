@@ -1,0 +1,19 @@
+#!groovy
+
+/// pro cesta='a/b/c/d'
+/// zavola:
+///         folder('a')
+///         folder('a/b')
+///         folder('a/b/c')
+///         folder('a/b/c/d')
+def vytvor_adresare(String cesta) {
+    dirs = cesta.split('/')
+    for (int i = 0; i < dirs.size(); i++) {
+        folder(dirs[0..i].join('/'))
+    }
+}
+
+
+for (f in ['TEAMS/A-TEAM/', 'TEAMS/ALPHA-TEAM', 'TEAMS/ADMINS', 'SEED_JOBS', 'PROJECTS/DOCKERFILES', 'PROJECTS/PLAYBOOKS']) {
+    vytvor_adresare(f)
+}
