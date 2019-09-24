@@ -29,7 +29,7 @@ def call(Map params)
 
             stage('🏗️ Deploys') {
                 parallel {
-                    stage('💻 On Premise') {
+                    stage('On Premise') {
                         stages {
                             stage('📦 Build package') {
                                 steps { sh 'sleep 3'; echo hlaska }
@@ -40,7 +40,7 @@ def call(Map params)
                         }
                     }
 
-                    stage('☁️ AWS') {
+                    stage('AWS') {
                         stages {
                             stage('📦 Build AMI') {
                                 steps { sh 'sleep 1'; echo hlaska }
