@@ -1,13 +1,11 @@
 #!groovy
 
-
 import jenkins.model.*
 import hudson.security.*
 
 
-// def labInstance = '1.1.2.3'
+def labInstance = '1.2.3.4'
 
-def labInstance = InetAddress.localHost.hostAddress
 
 def gitPrefix = "http://${labInstance}/gitserver/datascript"
 
