@@ -47,13 +47,13 @@ pipeline {
             error("Parameters loaded successfully.\n\nRERUN WITH PARAMETERS NOW\n\n\n\n")
           }
         }
-//        sshagent(['vagrant-insecure-ssh']) {
-          echo """ 
+        sshagent(['vagrant-insecure-ssh']) {
+          sh """ 
             cat ScriptConsole/disable-jobs-in-folder.groovy | \
               ssh "${USER}@${JENKINS_MASTER_HOST}" groovy = \
                 ${params.FOLDER}
           """
-//        }
+        }
       }
     }
   }
