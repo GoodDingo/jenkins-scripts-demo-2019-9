@@ -1,25 +1,8 @@
-// if ("${env.BUILD_ID}") {
-
-//     pipeline {
-//         parameters {
-//             string name: 'FOLDER', defaultValue: 'TEAMS/KOKOS', description: 'Path to folder that will be log-rotated', trim: true
-//         }        
-//     }
-//     stage("loading parameters") {
-//         echo 'Successfully loaded parameters from Git.'
-//     }
-//     currentBuild.result = 'SUCCESS'
-//     return
-// }
-
-
-def getJenkinsMaster() {
-    return env.BUILD_URL.split('/')[2].split(':')[0]
-}
+#!groovy
 
 
 USER = 'admin'
-JENKINS_MASTER_HOST = getJenkinsMaster()
+JENKINS_MASTER_HOST = env.BUILD_URL.split('/')[2].split(':')[0]
 
 
 pipeline {
@@ -40,11 +23,13 @@ pipeline {
   
   stages {
 
-    stage('disabling jobs') {
+    stage('disable jobs') {
       steps {
         script {
           if ("${env.BUILD_ID}" == '1') {
-            error("Parameters loaded successfully.\n\nRERUN WITH PARAMETERS NOW\n\n\n\n")
+            catchError(buildResult: 'SUCCESS') {
+              error('FIRST RUN... loading parameters from git. Loadeded succesfully.... job is now parametrized\n\nRERUN the job with parameters now.\n\n\n')
+            }
           }
         }
         sshagent(['vagrant-insecure-ssh']) {
@@ -56,5 +41,6 @@ pipeline {
         }
       }
     }
+    
   }
 }
