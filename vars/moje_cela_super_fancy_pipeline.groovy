@@ -19,7 +19,7 @@ def call(Map params)
             stage('😲 QA') {
                 parallel {
                     stage('🔬 Unit Tests') {
-                        steps { sh 'sleep 3'; echo hlaska }
+                        steps { sh 'sleep 3'; echo pozdrav('Mira') }
                     }
 
                     stage('ℹ️ Generate ALC documents') {
