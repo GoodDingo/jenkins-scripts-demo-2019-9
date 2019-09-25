@@ -1,3 +1,8 @@
+String pozdrav(String jmeno) {
+    "Ahoj $jmeno"
+}
+
+
 def call(Map params) 
 {   
     hlaska = params?.hlaska ?: 'funguje'
